@@ -1,0 +1,32 @@
+{
+  "name": "miblab-weather-server",
+  "version": "1.0.0",
+  "description": "A node.js webserver for collecting and visualizing temperature, pressure and humidity data from Raspberry Pis.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexauer/miblab-weather-server.git"
+  },
+  "author": "Alexander Auer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexauer/miblab-weather-server/issues"
+  },
+  "homepage": "https://github.com/alexauer/miblab-weather-server#readme",
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.12",
+    "morgan": "~1.8.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.2.1",
+    "pug": "~2.0.0-beta11",
+    "serve-favicon": "~2.4.2"
+  }
+}
