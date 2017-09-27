@@ -1,0 +1,17 @@
+extends layout
+
+block content
+	doctype html
+	html
+		head
+			// Bootstrap core CSS
+			link(href='//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
+			link(rel='stylesheet', href='/stylesheets/style.css')
+			link(rel='stylesheet', href='../stylesheets/signin.css')
+		body
+			.container
+				form.form-signin(role='form', action="/register",method="post", style='max-width: 300px;')
+					h2.form-signin-heading Sign Up here
+					input.form-control(type='text', name="username", placeholder='Your Username')
+					input.form-control(type='password', name="password", placeholder='Your Password')
+					button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign Up

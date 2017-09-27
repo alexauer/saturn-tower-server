@@ -5,13 +5,34 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+//var tls = require('tls');
+//var fs = require('fs');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+// SSL options
+// var configSSL = {
+//   key: fs.readFileSync('./private/server-key.pem'),
+//   cert: fs.readFileSync('./private/server-cert.pem'),
+//   ca: fs.readFileSync('')
+// }
 
-// Server
-var hostname = '127.0.0.1';
+// PFS (Perfect Forwared Security) context
+// var optionsPFS ={
+//   key: fs.readFileSync('./private/server-key.pem'),
+//   cert: fs.readFileSync('./private/server-cert.pem'),
+//   dhparam: fs.readFileSync('./private/dhparam.pem')
+// }
+
+
+// var context = tls.createSecureContext(configSSL);
+
+// deviceServer.addContext(host+port2,context);
+
+// Portal Server
+var HOST = '127.0.0.1';
 var PORT = 3000;
+
+// Sensor Server
+var PORT2 = 3001;
 
 // MongoDB
 var MongoClient = require('mongodb').MongoClient
@@ -53,8 +74,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+// configure passport
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({secret:'TopSecretKey',
+            saveUninitialized: true,
+            resave: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+//app.use(passport.authenticate('remember-me'));
+
+// Initialize Passport
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+var routes = require('./routes/index.js')(passport);
+var device = require('./routes/device.js');
+
+app.use('/', routes);
+app.use('/sensors', device);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -74,15 +112,9 @@ app.use(function(err, req, res, next) {
 	res.render('error');
 });
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
-
-var httpServer = http.createServer(app);
-httpServer.listen(PORT, function(){
-    console.log("Node server running at port: "+PORT);
+var httpPortalServer = http.createServer(app);
+httpPortalServer.listen(PORT, function(){
+    console.log("Node portal server running at port: "+PORT);
 });
 
 module.exports = app;
