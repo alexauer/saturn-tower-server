@@ -11,7 +11,7 @@ var sensor = winston.loggers.get('sensor');
 //models
 var Sensor = require('../models/sensor.js');
 var User = require('../models/user.js');
-var SensorData = require('../models/sensorData.js');
+var Measurement = require('../models/measurement.js');
 
 
 //config
@@ -32,8 +32,6 @@ deviceRoute.post('/', isAuthenticated, function(req, res){
 			sensor.error('SensorID: ')
 		}
 		if (input){
-			// console.log(req.body);
-			// res.send({"id":"59cd22d654237a835d4e8f2b"});
 			
 			// //check sensor ID & message hash (fake sensor attack)
 			checkAuthenticity(req, function(err, authenticity){
@@ -63,12 +61,12 @@ deviceRoute.post('/', isAuthenticated, function(req, res){
 						if (err){
 							sensor.error('Sensor: ' + req.body.message.sensorname + ' data could not be saved into DB: ' + err + '\r');
 						}else if (dataDB){
-							sensor.info('Sensor: ' + req.body.message.sensorname + ' sensordata saved in DB. \r');
+							// sensor.info('Sensor: ' + req.body.message.sensorname + ' sensordata saved in DB. \r');
 						}
 
 						prepareResponse(err, dataDB, function(response){
 							res.send(JSON.stringify(response));
-							sensor.info('Sensor: ' + req.body.message.sensorname + ' response sent to client. \r')
+							// sensor.info('Sensor: ' + req.body.message.sensorname + ' response sent to client. \r')
 						});
 					});
 				}
@@ -93,11 +91,12 @@ var checkInput = function(req, callback){
 }
 
 var checkAuthenticity = function(req, callback){
+
 	
-	// hashSensorID(req.body.message.sensorID, function(hash){
-	// 	console.log("hash: " + req.body.message.sensorIDHash);
-	// 	console.log("hashed: "+ hash);
-	// 	console.log("valid " + req.body.message.sensorIDHash == hash);
+	// hashSensorID(req.body.message.sensorID, key, function(hash){
+	// 	console.log("hash:   " + req.body.message.sensorIDHash);
+	// 	console.log("hashed: " + hash);
+	// 	console.log(req.body.message.sensorIDHash.valueOf() == hash.valueOf());
 	// });	
 
 	// hashMsg(JSON.stringify(req.body.message), function(hash){
@@ -114,18 +113,19 @@ var checkAuthenticity = function(req, callback){
 		var msgHash = req.body.messageHash;
 		var msgString = JSON.stringify(req.body.message);
 
+		var key = req.body.message.timestamp.toString().slice(-4) + config.deviceHashKey;
 		// check sensorID hash
-		hashSensorID(sensorID, function(hashedSensorID){
+		hashSensorID(sensorID, key, function(hashedSensorID){
 
-			if(hashedSensorID == sensorIDHash){
+			if(hashedSensorID === sensorIDHash){
 
 				// check message hash
-				hashMsg(msgString, function(hasehdRawMsgBody){
+				hashMsg(msgString, config.msgHashKey, function(hasehdRawMsgBody){
 
-					if (hasehdRawMsgBody  == msgHash){
+					if (hasehdRawMsgBody  === msgHash){
 						return callback(null, true);
 					}else{
-						return callback(new Error('Sensor was authenticated. Message Hash wrong. \n' + "msgHash:"+msgHash+" \n"+"hasedMsg: "+ hasehdRawMsgBody+"\nMsgString:"+msgString+"\nMsgRaw:"+req.body.message), null)
+						return callback(new Error('Sensor was authenticated. Message Hash wrong. \n' + "msgHash:"+msgHash+" \n"+"hashedMsg: "+ hasehdRawMsgBody+"\nMsgString:"+msgString+"\nMsgRaw:"+req.body.message), null)
 					}
 				});
 
@@ -136,14 +136,14 @@ var checkAuthenticity = function(req, callback){
 	}
 }
 
-var hashSensorID = function(input, callback){
-	var hash = crypto.HmacSHA256(input, config.deviceHashKey);
+var hashSensorID = function(input, key, callback){
+	var hash = crypto.HmacSHA256(input, key);
 	var hashString = hash.toString(crypto.enc.utf8);
 	return callback(hashString);
 }
 
-var hashMsg = function(input, callback){
-	var hash = crypto.HmacSHA256(input, config.msgHashKey);
+var hashMsg = function(input, key, callback){
+	var hash = crypto.HmacSHA256(input, key);
 	var hashString = hash.toString(crypto.enc.utf8);
 	return callback(hashString);
 }
@@ -158,7 +158,7 @@ var saveToDB = function(req, callback){
 	 	} 
 	 	if (sensor) {
 
-    		var data = new SensorData();
+    		var data = new Measurement();
 			data.sensorID = req.body.message.sensorID;
 			data.sensorObjectID = req.body.message.sensorObjectID;
 			data.sensorName = req.body.message.sensorname;
@@ -174,7 +174,7 @@ var saveToDB = function(req, callback){
 					callback(new Error('Sensor data could not be saved: ' + err), false);
 				}else{
 					callback(null, data);
-				}
+				} 
 			});
 	 	 }
 	});

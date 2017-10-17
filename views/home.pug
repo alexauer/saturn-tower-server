@@ -1,0 +1,90 @@
+extends layout
+
+block content
+	nav.navbar.navbar-expand-md.fixed-top
+		.container
+			a.navbar-brand(href='#') Miblab Weatherstation
+			button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarCollapse', aria-controls='navbarCollapse', aria-expanded='false', aria-label='Toggle navigation')
+				span.navbar-toggler-icon
+			#navbarCollapse.collapse.navbar-collapse
+				ul.navbar-nav.mr-auto
+					//li.nav-item.active
+						//a.nav-link(href='#')
+						//	| Home 
+						//	span.sr-only (current)
+
+				button.btn.btn-outline-secondary.my-2.my-sm-0(type="submit")#logoutButton
+					span.icon.ion-power
+					|  Logout
+	.container
+		.d-flex.flex-wrap.justify-content-between
+			each prop in docs
+				.card.widget
+					.card-title.d-flex.justify-content-between
+						.widget-sensorname #{prop.sensor.sensorname}
+						.widget-title #{prop.sensor.locationID}
+						.widget-sensorstatus
+							if (moment().format('X') - moment(prop.data.timestamp*1000).format('X')) < prop.sensor.sendInteral
+								.icon.ion-checkmark-circled(style="color: #40B271")
+							else
+								.icon.ion-alert-circled(style="color:#FF5147")
+					.card-body
+						.card-group.widget-featuregroup
+							.card.widget-feature(id="t/" + prop.data.sensorObjectID)
+								.card-body.mx-auto
+									.card-feature.ion-thermometer
+									.card-feature-value #{prop.data.weatherData.temperatureEnvironment} 
+									.card-feature-unit °C
+							.card.widget-feature(id="p/"+prop.data.sensorObjectID)
+								.card-body.mx-auto
+									.card-feature.ion-speedometer
+									.card-feature-value #{prop.data.weatherData.pressure} 
+									.card-feature-unit mbar
+							.card.widget-feature(id="h/"+prop.data.sensorObjectID)
+								.card-body.mx-auto
+									.card-feature.ion-waterdrop
+									.card-feature-value #{prop.data.weatherData.humidity} 
+									.card-feature-unit %
+					.card-footer
+						.card-timestamp.ion-clock  
+							.p #{moment(prop.data.timestamp*1000).format('LL')} #{moment(prop.data.timestamp*1000).format('LT')}
+		.card#containerLineplot(style='display:none')
+			.card-header
+				.btn-toolbar.justify-content-between(role='toolbar', aria-label='Toolbar with button groups')
+					.plot-title.icon.ion-ios-pulse-strong
+						|  Time Trace
+					.btn-group.btn-group-sm.mx-auto(role='group', aria-label='First group')
+						button.btn.btn-outline-dark(type='button')#btn12h 12h
+						button.btn.btn-outline-dark(type='button')#btn24h 24h
+						button.btn.btn-outline-dark(type='button')#btn48h 48h
+						button.btn.btn-outline-dark(type='button')#btn1w 1w
+					button.close(type='button', data-dismiss='alert', aria-label='Close')#btnLineplotClose
+						span(aria-hidden='true') ×
+			.card-body
+				#lineplot(style='width:100%; height:400px;')
+			.card-footer
+				.d-flex.justify-content-end
+					button.btn.btn-sm.btn-dark(type='button').btn-export Download Plot Data
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+		

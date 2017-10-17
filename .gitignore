@@ -3,3 +3,7 @@
 
 config/main.json
 *.log
+node_modules/.DS_Store
+node_modules/chart.js/.DS_Store
+.DS_Store
+.DS_Store

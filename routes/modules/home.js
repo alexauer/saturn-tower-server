@@ -11,39 +11,51 @@ var User = require('../../models/user.js')
 var Sensor = require('../../models/sensor.js');
 var Measurement = require('../../models/measurement.js');
 
+
 var show = function (req, res){
 	
-	var sensorIDs = req.user.sensorIDs;
-	resData=[];
+	var sensorObjectIDs = req.user.sensorObjectIDs;
+	var response = [];
 
-	// //find for each sensor the last sensorDocument in db sensordata and append it to the response document
-	// async.eachSeries(sensorIDs, function (id,next){	
-	// 	SensorData.findOne({'sensorObjectID':id}).sort('-settings.timestamp').exec(function (err, sensorData){
+	async.eachSeries(sensorObjectIDs, function(id,next){
 			
-	//         if (sensorData!==null){
-	//         	//if sensor was found, get the sensorIDs
-	//         	resData.push(sensorData);
-	//         	next();
-	//         }else{
-	//         	next();
-	//         }
-	// 	});
-	// }, 	function (err){
-			
-	// 		if(err){
-	// 			portal.error('Web Portal: User: '+req.user.username+': Error during data preperation for home request, error: '+err+' \r');
-	// 			res.render('home', { title: 'Miblab Weatherstation', errorMessage: 'Error during query.'});
-	// 		}
-	// 		if (resData.length>0){
-	// 			portal.info('Web Portal: User: '+req.user.username+': Home request was successfully carried out.\r');
-	// 			res.render('home', { title: 'Miblab Weatherstation', docs: resData});
-	// 		}
-	// 		else{
-	// 			portal.error('Web Portal: User: '+req.user.username+': Error during data preperation for home request, query was empty.');
-	// 			res.render('home', { title: 'Miblab Weatherstation', errorMessage: 'No sensors are assigned to user.'});
-	// 		}
-	// 	}	
-	// );
+		Measurement.findOne({'sensorObjectID':id}).sort('-timestamp').exec( function(err,measurement){
+
+			if(err){
+					next();
+			}else if(measurement){
+
+				var query = Sensor.where({'_id':id});
+				query.findOne(function(err,sensor){
+					if(err){	
+
+					}else if(sensor){
+						var data ={
+							"sensor" : {
+								"locationID" : sensor.locationID,
+								"sendInterval" : sensor.sendInterval,
+								"sensorname": sensor.sensorName},
+							"data":measurement
+						}
+						response.push(data);
+					}else{
+						
+					}
+					next();
+				});
+			}else{
+					next();
+			}
+		});
+	}, function(err){
+		if(err){
+			res.render('home', {title: 'Miblab Weatherstation', errorMessage:'Error during data preparation.'});
+		}else if(response){
+			res.render('home', {title: 'Miblab Weatherstation', docs:response});
+		}else{
+			res.render('home', {title: 'Miblab Weatherstation', errorMessage:'User has no sensors assigned.'});
+		}
+	});	
 }
 
 module.exports.show = show;

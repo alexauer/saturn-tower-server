@@ -16,8 +16,8 @@ var isAuthenticated = function (req, res, next) {
 module.exports = function(passport){
 	
 	/* GET login page. */
-	router.get('/', function(req, res, next) {
-		res.render('index', { title: 'Welcome to the Miblab Weatherstation.' });
+	router.get('/', function(req, res) {
+		res.render('index', {title: 'Welcome to the Miblab Weatherstation.'});
 	});
 
 	/* Handle login POST */
@@ -28,9 +28,16 @@ module.exports = function(passport){
 	}));
 
 	/* Handle Logout */
-	router.get('/signout', function(req, res) {
+	router.get('/logout', isAuthenticated, function(req, res) {
+		req.session.destroy();
 		req.logout();
 		res.redirect('/');
+	});
+
+	/* GET home page */
+	router.get('/home', isAuthenticated, function(req,res){
+		var homeReq = require('./modules/home.js');
+		homeReq.show(req, res);
 	});
 
 	/* GET registeration page. */
@@ -44,6 +51,12 @@ module.exports = function(passport){
 	    failureRedirect: '/register',
 	    failureFlash : true 
 	}));
+
+	/* GET chart data */
+	router.get('/get/chartData/:sensor_ObjectID/:start-:end', isAuthenticated, function(req,res){
+		var getChartData = require('./modules/getChartData.js');
+		getChartData.getChartData(req,res);
+	});
 
 	return router;
 }; 

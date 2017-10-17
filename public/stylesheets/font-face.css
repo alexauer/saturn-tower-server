@@ -1,0 +1,5 @@
+@font-face {
+font-family: 'Orbitron';
+font-style: bold;
+font-weight: 700;
+src: local('Orbitron'), local('OpenSans-Light'), url(../fonts/orbitron/orbitron.ttf)
