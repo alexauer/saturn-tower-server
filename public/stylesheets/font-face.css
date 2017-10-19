@@ -2,4 +2,23 @@
 font-family: 'Orbitron';
 font-style: bold;
 font-weight: 700;
-src: local('Orbitron'), local('OpenSans-Light'), url(../fonts/orbitron/orbitron.ttf)
+src: local('Orbitron'), url(../fonts/orbitron/orbitron-bold.ttf)
+}
+@font-face {
+font-family: 'Orbitron';
+font-style: normal;
+font-weight: 500;
+src: local('Orbitron'), url(../fonts/orbitron/orbitron-regular.ttf)
+}
+@font-face {
+font-family: 'Lato';
+font-style: normal;
+font-weight: 500;
+src: local('Orbitron'), url(../fonts/lato/Lato-Regular.ttf)
+}
+@font-face {
+font-family: 'Lato';
+font-style: bold;
+font-weight: 700;
+src: local('Orbitron'), url(../fonts/lato/Lato-Bold.ttf)
+}

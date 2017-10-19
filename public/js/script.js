@@ -4,7 +4,7 @@
 // 		initialize();
 // 	}
 // )
-
+var lineplotSensorObjectID;
 
 function initialize(){
 
@@ -28,6 +28,7 @@ $(document).on('click', '.widget-feature', function() {
 	var featureID = this.id;
 	var focus = featureID.split("/")[0];
 	var sensorObjectID = featureID.split("/")[1];
+	lineplotSensorObjectID = sensorObjectID;
 	// var endtime = 1507216072;
 	var endtime = moment().format('X');
 	// use 12h window as default
@@ -41,25 +42,83 @@ $(document).on('click', '.widget-feature', function() {
 
 });
 
-$(document).on('click','.btn12h', function(){
+$(document).on('click','#btn12h', function(){
 
 	if ($("#lineplot").is(":hidden")){
 
-	}
+	}else{
+		var sensorObjectID = lineplotSensorObjectID;
+		var endtime = moment().format('X');
+		var starttime = endtime - 43200;
 
+		getChartData(sensorObjectID, starttime, endtime, function(response){
+			var csv = response.docs;
+			updateLinePlot(csv,focus);		
+		});
+	}
 });
+
+$(document).on('click','#btn24h', function(){
+
+	if ($("#lineplot").is(":hidden")){
+
+	}else{
+		var sensorObjectID = lineplotSensorObjectID;
+		var endtime = moment().format('X');
+		var starttime = endtime - 86400;
+
+		getChartData(sensorObjectID, starttime, endtime, function(response){
+			var csv = response.docs;
+			updateLinePlot(csv,focus);		
+		});
+	}
+});
+
+
+$(document).on('click','#btn48h', function(){
+
+	if ($("#lineplot").is(":hidden")){
+
+	}else{
+		var sensorObjectID = lineplotSensorObjectID;
+		var endtime = moment().format('X');
+		var starttime = endtime - 172800;
+
+		getChartData(sensorObjectID, starttime, endtime, function(response){
+			var csv = response.docs;
+			updateLinePlot(csv,focus);		
+		});
+	}
+});
+
+$(document).on('click','#btn1w', function(){
+
+	if ($("#lineplot").is(":hidden")){
+
+	}else{
+		var sensorObjectID = lineplotSensorObjectID;
+		var endtime = moment().format('X');
+		var starttime = endtime - 604800;
+
+		getChartData(sensorObjectID, starttime, endtime, function(response){
+			var csv = response.docs;
+			updateLinePlot(csv,focus);		
+		});
+	}
+});
+
 
 function showLineplot(){
 
-	if ($( "#containerLineplot" ).is( ":hidden" )){
-		$( "#containerLineplot" ).slideDown();
+	if ($( "#container-lineplot" ).is( ":hidden" )){
+		$( "#container-lineplot" ).slideDown();
 	}
 }
 
 function hideLineplot(){
 
-	if($("#containerLineplot").not(":hidden")){
-		$("#containerLineplot").slideUp();
+	if($("#container-lineplot").not(":hidden")){
+		$("#container-lineplot").slideUp();
 	}
 }
 

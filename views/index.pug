@@ -6,9 +6,9 @@ block content
 			.logo
 				img.img-fluid(src='./img/tower.png', alt='Responsive image')
 		form(class='form-signin', action='/login', method='POST')
-			h2.form-signin-heading.text-center Saturn Tower
+			.title-login.form-signin-heading.text-center Saturn Tower
 			input(type='text', name='username' class='form-control', placeholder='Account',required, autofocus)
 			input(type='password', name='password' class='form-control', placeholder='Passwort', required)
-			button(class='btn btn-lg btn-primary border-0 btn-block', type='submit') login
+			button(class='btn btn-lg btn-primary btn-login border-0 btn-block', type='submit') login
 			span.clearfix
 
