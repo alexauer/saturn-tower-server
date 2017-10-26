@@ -24,7 +24,7 @@ block content
 						.widget-sensorname #{prop.sensor.sensorname}
 						.widget-title #{prop.sensor.locationID}
 						.widget-sensorstatus
-							if (moment().format('X') - moment(prop.data.timestamp * 1000).format('X')) <= (prop.sensor.sendInterval + 100)
+							if (moment().format('X') - moment(prop.data.timestamp * 1000).format('X')) <= (2*prop.sensor.sendInterval)
 								//.icon.ion-checkmark-circled(style="color: #40B271")
 							else
 								.icon.ion-alert-circled(style="color:#FF5147" title="Sensor down")
@@ -33,7 +33,7 @@ block content
 							.card.widget-feature(id="t/" + prop.data.sensorObjectID)
 								.card-body.mx-auto
 									.card-feature.ion-thermometer
-									.card-feature-value #{(prop.data.weatherData.temperatureEnvironment-((prop.data.weatherData.temperatureCPU-prop.data.weatherData.temperatureEnvironment)/5.5)).toFixed(2)}
+									.card-feature-value #{prop.data.weatherData.temperatureEnvironment}
 									.card-feature-unit °C
 							.card.widget-feature(id="p/"+prop.data.sensorObjectID)
 								.card-body.mx-auto
@@ -48,6 +48,12 @@ block content
 					.card-footer
 						.card-timestamp.ion-clock  
 							.p #{moment(prop.data.timestamp*1000).format('LL')} #{moment(prop.data.timestamp*1000).format('LT')}
+
+		.card.container-yaml
+			.card-body
+				.drag-and-drop.text-center
+					.icon-drag-and-drop.ion-archive
+					span Drop yaml file here.
 		.card#container-lineplot(style='display:none')
 			.card-header
 				.btn-toolbar.justify-content-between(role='toolbar', aria-label='Toolbar with button groups')

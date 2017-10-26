@@ -107,6 +107,27 @@ $(document).on('click','#btn1w', function(){
 	}
 });
 
+$(document).on('drop','drag-and-drop', drop);
+
+$(document).on('dragover','drag-and-drop', dragover);
+
+function dragover(e) {
+	e.originalEvent.dataTransfer.dropEffect = 'copy'
+	e.preventDefault()
+	return false
+}
+
+function drop(e) {
+	e.preventDefault()
+	var dataTransfer = e.originalEvent.dataTransfer,
+		fd = new FormData()
+	if (dataTransfer.files && dataTransfer.files.length){
+		$.each(dataTransfer.files,function(i,v) {
+			fd.append("file",v,v.name)
+		})
+		fd.append("url","drop")
+	}
+}
 
 function showLineplot(){
 
@@ -204,10 +225,10 @@ function updateLinePlot(csv, focus){
 			zoomType: 'x'
 		},
 		title: {
-        	text: ''
-    	},
-    	credits: {
-   			enabled: false
+			text: ''
+		},
+		credits: {
+			enabled: false
 		},
 		colors: ['#B25644', '#60708C', '#A18D76'],
 		xAxis: [{
@@ -246,7 +267,7 @@ function updateLinePlot(csv, focus){
 
 		}],
 		tooltip: {
-		    shared: true
+			shared: true
 		},
 		series: [
 

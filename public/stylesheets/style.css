@@ -16,7 +16,36 @@ a {
 .title-login{
 	font-family: 'Orbitron';
 	font-size: 2rem;
-	padding-bottom: 10px;
+	padding-bottom: 5px;
+}
+.subtitle-login{
+	font-family: 'Orbitron';
+	font-size: 0.875rem;
+	margin-bottom: 20px;
+}
+
+.footer {
+	margin-bottom:20px;
+	color:#aaa;
+} 
+.container-yaml{
+	margin-bottom: 10px;
+}
+
+.drag-and-drop{
+	padding:4px;
+	border-color:#ddd;
+    border-width: 2px;  
+    border-style:dashed;
+}
+.drag-and-drop-highlight{
+	background:#eee;
+	border-color:#fff;
+}
+
+.icon-drag-and-drop{
+	font-size: 1.5rem;
+	color:#3D4553;
 }
 
 .container-lineplot{
