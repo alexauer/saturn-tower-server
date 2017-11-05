@@ -107,6 +107,22 @@ $(document).on('click','#btn1w', function(){
 	}
 });
 
+$(document).on('click','#btn1m', function(){
+
+	if ($("#lineplot").is(":hidden")){
+
+	}else{
+		var sensorObjectID = lineplotSensorObjectID;
+		var endtime = moment().format('X');
+		var starttime = endtime - 2419200;
+
+		getChartData(sensorObjectID, starttime, endtime, function(response){
+			var csv = response.docs;
+			updateLinePlot(csv,focus);		
+		});
+	}
+});
+
 $(document).on('drop','drag-and-drop', drop);
 
 $(document).on('dragover','drag-and-drop', dragover);
@@ -201,7 +217,7 @@ function updateLinePlot(csv, focus){
 			
 			$.each(items, function(itemNo, item) {
 				if (itemNo == 0) {
-					time.push(moment(item,'X').format("HH:mm"));
+					time.push(moment(item,'X').format('dd')+", "+moment(item,'X').format("HH:mm"));
 				}
 				if (itemNo == 1){
 					//temperature
@@ -269,15 +285,25 @@ function updateLinePlot(csv, focus){
 		tooltip: {
 			shared: true
 		},
+		plotOptions: {
+		        areaspline: {
+		            fillOpacity: 0.1
+		        }
+		},
 		series: [
 
 		{
-			name: 'Temperature',
-			type: 'spline',
+			name: 'Temp',
+
+			type: 'areaspline',
+			label: {
+				enabled: false
+			},
 			yAxis: 0,
+			description: '',
 			visible: visTemp,
 			marker: {
-				enabled: true
+				enabled: false
 			},
 			data: temp,
 			tooltip: {

@@ -49,21 +49,21 @@ block content
 						.card-timestamp.ion-clock  
 							.p #{moment(prop.data.timestamp*1000).format('LL')} #{moment(prop.data.timestamp*1000).format('LT')}
 
-		.card.container-yaml
-			.card-body
-				.drag-and-drop.text-center
-					.icon-drag-and-drop.ion-archive
-					span Drop yaml file here.
+		//.card.container-yaml
+		//	.card-body
+		//		.drag-and-drop.text-center
+		//			.icon-drag-and-drop.ion-archive
+		//			span Drop yaml file here.
 		.card#container-lineplot(style='display:none')
 			.card-header
 				.btn-toolbar.justify-content-between(role='toolbar', aria-label='Toolbar with button groups')
 					.plot-title.icon.ion-ios-pulse-strong
-						|  Time Trace
+						|  Graph
 					.btn-group.btn-group-xs.mx-auto(role='group', aria-label='First group')
-						button.btn.btn-outline-dark(type='button')#btn12h 12h
 						button.btn.btn-outline-dark(type='button')#btn24h 24h
 						button.btn.btn-outline-dark(type='button')#btn48h 48h
 						button.btn.btn-outline-dark(type='button')#btn1w 1w
+						button.btn.btn-outline-dark(type='button')#btn1m 1m
 					button.close(type='button', data-dismiss='alert', aria-label='Close')#btnLineplotClose
 						span(aria-hidden='true') ×
 			.card-body
