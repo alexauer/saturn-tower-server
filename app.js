@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var flash = require('express-flash');
-//var tls = require('tls');
-//var fs = require('fs');
+// var tls = require('tls');
+// var fs = require('fs');
+
+var config = require('./config/main.json')
 
 // SSL options
 // var configSSL = {
@@ -30,7 +32,7 @@ var flash = require('express-flash');
 
 // Portal Server
 var HOST = '127.0.0.1';
-var PORT = 3000;
+var PORT = config.PORT;
 
 // MongoDB
 var MongoClient = require('mongodb').MongoClient

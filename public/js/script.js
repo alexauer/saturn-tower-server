@@ -24,7 +24,6 @@ $(document).on('click', '.widget-feature', function() {
 
 	showLineplot();
 
-
 	var featureID = this.id;
 	var focus = featureID.split("/")[0];
 	var sensorObjectID = featureID.split("/")[1];
@@ -37,25 +36,9 @@ $(document).on('click', '.widget-feature', function() {
 	getChartData(sensorObjectID, starttime, endtime, function(response){
 
 		var csv = response.docs;
-		updateLinePlot(csv,focus);		
+		updateLinePlot(csv,focus,'24h');		
 	});
 
-});
-
-$(document).on('click','#btn12h', function(){
-
-	if ($("#lineplot").is(":hidden")){
-
-	}else{
-		var sensorObjectID = lineplotSensorObjectID;
-		var endtime = moment().format('X');
-		var starttime = endtime - 43200;
-
-		getChartData(sensorObjectID, starttime, endtime, function(response){
-			var csv = response.docs;
-			updateLinePlot(csv,focus);		
-		});
-	}
 });
 
 $(document).on('click','#btn24h', function(){
@@ -69,7 +52,7 @@ $(document).on('click','#btn24h', function(){
 
 		getChartData(sensorObjectID, starttime, endtime, function(response){
 			var csv = response.docs;
-			updateLinePlot(csv,focus);		
+			updateLinePlot(csv,focus,'24h');		
 		});
 	}
 });
@@ -86,7 +69,7 @@ $(document).on('click','#btn48h', function(){
 
 		getChartData(sensorObjectID, starttime, endtime, function(response){
 			var csv = response.docs;
-			updateLinePlot(csv,focus);		
+			updateLinePlot(csv,focus,'48h');		
 		});
 	}
 });
@@ -102,7 +85,7 @@ $(document).on('click','#btn1w', function(){
 
 		getChartData(sensorObjectID, starttime, endtime, function(response){
 			var csv = response.docs;
-			updateLinePlot(csv,focus);		
+			updateLinePlot(csv,focus,'1w');		
 		});
 	}
 });
@@ -118,7 +101,7 @@ $(document).on('click','#btn1m', function(){
 
 		getChartData(sensorObjectID, starttime, endtime, function(response){
 			var csv = response.docs;
-			updateLinePlot(csv,focus);		
+			updateLinePlot(csv,focus,'1m');		
 		});
 	}
 });
@@ -175,7 +158,7 @@ function getChartData(sensorObjectID, starttime, endtime, callback){
 	}
 }
 
-function updateLinePlot(csv, focus){
+function updateLinePlot(csv, focus, timespan){
 
 	if(focus=="t"){
 		var visTemp = true;
@@ -217,18 +200,24 @@ function updateLinePlot(csv, focus){
 			
 			$.each(items, function(itemNo, item) {
 				if (itemNo == 0) {
-					time.push(moment(item,'X').format('dd')+", "+moment(item,'X').format("HH:mm"));
+					if (timespan == '24h' || timespan == '48h'){
+						time.push(moment(item,'X').format("HH:mm"));	
+					}else if (timespan == '1w'){
+						time.push(moment(item,'X').format("dd, HH:mm"));	
+					}else if(timespan == '1m'){
+						time.push(moment(item,'X').format("dd, D MMM, HH:mm"));		
+					}
 				}
 				if (itemNo == 1){
-					//temperature
+					// temperature
 					temp.push(parseFloat(item));
 				} 
 				if (itemNo == 2){
-					//pressure
+					// pressure
 					pres.push(parseFloat(item));
 				}
 				if (itemNo == 3){
-					//humidity
+					// humidity
 					hum.push(parseFloat(item));
 				}
 			});

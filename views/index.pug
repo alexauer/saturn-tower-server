@@ -1,18 +1,16 @@
 extends layout
 
 block content
-	.login-wrapper
-		.login-panel.rounded
-			.row.justify-content-around
-				.logo
-					img.img-fluid(src='./img/tower.png', alt='Responsive image')
-			form(class='form-signin', action='/login', method='POST')
-				.title-login.form-signin-heading.text-center Saturn Tower
-				input(type='text', name='username' class='form-control', placeholder='Account',required, autofocus)
-				input(type='password', name='password' class='form-control', placeholder='Passwort', required)
-				button(class='btn btn-lg btn-primary btn-login border-0 btn-block', type='submit') login
-				span.clearfix
-				.fixed-bottom.footer.text-center v0.9.0 
-					a(href='https://github.com/alexauer')
-						span.ion.ion-social-github  
-						|	alex.auer
+	.login-panel.rounded.align-middle
+		.logo
+			img.img-fluid(src='./img/tower.gif', alt='Responsive image')
+		form(class='form-signin', action='/login', method='POST')
+			.title-login.form-signin-heading.text-center Saturn Tower
+			input(type='text', name='username' class='form-control', placeholder='Account',required, autofocus)
+			input(type='password', name='password' class='form-control', placeholder='Passwort', required)
+			button(class='btn btn-lg btn-primary btn-login border-0 btn-block', type='submit') login
+			span.clearfix
+	.credits.text-center v0.9.0 
+		a(href='https://github.com/alexauer')
+			span.ion.ion-social-github  
+			|	alex.auer
