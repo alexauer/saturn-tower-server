@@ -27,30 +27,34 @@ var show = function (req, res){
 
 				var query = Sensor.where({'_id':id});
 				query.findOne(function(err,sensor){
+
 					if(err){	
 
 					}else if(sensor){
-						var data ={
+						var data = {
 							"sensor" : {
 								"locationID" : sensor.locationID,
 								"sendInterval" : sensor.sendInterval,
-								"sensorname": sensor.sensorName},
-							"data":measurement
-						}
+								"data" : measurement }
+							}
+						
 						response.push(data);
+
 					}else{
 						
 					}
 					next();
 				});
+
 			}else{
-					next();
+				next();
 			}
 		});
 	}, function(err){
 		if(err){
 			res.render('home', {title: 'Miblab Weatherstation', errorMessage:'Error during data preparation.'});
 		}else if(response){
+			
 			res.render('home', {title: 'Miblab Weatherstation', docs:response});
 		}else{
 			res.render('home', {title: 'Miblab Weatherstation', errorMessage:'User has no sensors assigned.'});

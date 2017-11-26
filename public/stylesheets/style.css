@@ -52,23 +52,24 @@ a {
 	margin-bottom: 10px;
 }
 
-.drag-and-drop{
+#drag-and-drop{
 	padding:4px;
 	border-color:#ddd;
     border-width: 2px;  
     border-style:dashed;
 }
-.drag-and-drop-highlight{
-	background:#eee;
-	border-color:#fff;
+#yaml-list{
+	text-align: center;
+	padding-top:5px;
+	padding-bottom:2px;
+	width:100%;
 }
-
 .icon-drag-and-drop{
 	font-size: 1.5rem;
 	color:#3D4553;
 }
 
-.container-lineplot{
+#container-lineplot{
 	display: none;
 }
 .form-signin{
@@ -105,7 +106,6 @@ a {
 .widget{
 	width: 250px;
 	margin-bottom: 10px;
-
 }
 .widget-featuregroup:hover{
 	background-color: #eee;

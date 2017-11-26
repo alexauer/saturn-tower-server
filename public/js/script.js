@@ -1,16 +1,13 @@
-// $(document).ready(
-// 	function ()
-// 	{
-// 		initialize();
-// 	}
-// )
-var lineplotSensorObjectID;
+$(document).ready(
+	function(){
+		var lineplotSensorObjectID;
+		var yamlDropZone = document.getElementById('drag-and-drop');
 
-function initialize(){
-
-	
-
-}
+		yamlDropZone.addEventListener('dragover', handleDragOver, false);
+		yamlDropZone.addEventListener('drop', handleFileSelect, false);
+		
+	}
+)
 
 $(document).on('click', '#logoutButton', function() {
 	window.location.href = "/logout";
@@ -106,26 +103,67 @@ $(document).on('click','#btn1m', function(){
 	}
 });
 
-$(document).on('drop','drag-and-drop', drop);
+function handleFileSelect(evt) {
+	evt.stopPropagation();
+	evt.preventDefault();
 
-$(document).on('dragover','drag-and-drop', dragover);
+	var files = evt.dataTransfer.files;
 
-function dragover(e) {
-	e.originalEvent.dataTransfer.dropEffect = 'copy'
-	e.preventDefault()
-	return false
+	for (var i = 0, f; f = files[i]; i++) {
+
+		var output = [];
+		output.push('<strong>', escape(f.name),);
+
+		var reader = new FileReader();
+
+		reader.onload = function(){
+
+			var yaml = reader.result;
+
+			try {
+				var docs_yaml = jsyaml.loadAll(yaml, 'utf8');
+				var doc_yaml = docs_yaml[0];
+		
+				var starttime = parseYamlTime(doc_yaml['Micro-Manager Metadata']['Time']);
+
+				//calculate imaging time using number of frames and exposure time per frame
+				var endtime = starttime + (doc_yaml['Frames']*parseInt(doc_yaml['Micro-Manager Metadata']['Exposure-ms']/1000));
+
+				getSensorID(doc_yaml["Micro-Manager Metadata"]["Microscope-Label"], function(sensorObjectID, err){
+
+					if(err){
+						window.alert("No sensor found.")
+					}else if(sensorObjectID){
+
+						getChartData(sensorObjectID, starttime, endtime, function(response){
+							var csv = response.docs;
+							updateLinePlot(csv,focus,'yaml');		
+						});
+					}
+				})
+			} catch (e) {
+				console.log(e);
+			}
+		};
+
+		var doc = reader.readAsText(f);
+	}
+
+    document.getElementById('yaml-list').innerHTML = 'yaml file: ' + output.join('');
 }
 
-function drop(e) {
-	e.preventDefault()
-	var dataTransfer = e.originalEvent.dataTransfer,
-		fd = new FormData()
-	if (dataTransfer.files && dataTransfer.files.length){
-		$.each(dataTransfer.files,function(i,v) {
-			fd.append("file",v,v.name)
-		})
-		fd.append("url","drop")
-	}
+function parseYamlTime(time){
+
+	// prepare Micromanager Timestamp for moment.js formatting
+	var times = time.split(" ");
+	var timestamp = moment(times[0]+"T"+times[1]+times[2]).format('X');
+	return(timestamp)
+}
+
+function handleDragOver(evt) {
+	evt.stopPropagation();
+	evt.preventDefault();
+	evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 }
 
 function showLineplot(){
@@ -142,20 +180,27 @@ function hideLineplot(){
 	}
 }
 
+function getSensorID(sensorLocation, callback){
+
+	if(sensors[sensorLocation] == undefined){
+		callback(null,true);
+	}else{
+		callback(sensors[sensorLocation], null);
+	}
+}
 
 function getChartData(sensorObjectID, starttime, endtime, callback){
 
 	if ($( "#lineplot" ).is( ":hidden" )){
-		
-	}else{
-
-		var url = '/get/ChartData/' + sensorObjectID + '/'+starttime+'-'+endtime;
-		$.get(url, function( response ) {
-			if(response.status == 'ok'){
-				callback(response);
-			}
-		});
+		showLineplot()
 	}
+
+	var url = '/get/ChartData/' + sensorObjectID + '/'+starttime+'-'+endtime;
+	$.get(url, function( response ) {
+		if(response.status == 'ok'){
+			callback(response);
+		}
+	});
 }
 
 function updateLinePlot(csv, focus, timespan){
@@ -200,7 +245,7 @@ function updateLinePlot(csv, focus, timespan){
 			
 			$.each(items, function(itemNo, item) {
 				if (itemNo == 0) {
-					if (timespan == '24h' || timespan == '48h'){
+					if (timespan == '24h' || timespan == '48h' || timespan == 'yaml'){
 						time.push(moment(item,'X').format("HH:mm"));	
 					}else if (timespan == '1w'){
 						time.push(moment(item,'X').format("dd, HH:mm"));	

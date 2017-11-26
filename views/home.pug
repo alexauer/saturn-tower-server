@@ -1,6 +1,8 @@
 extends layout
 
 block content
+	script(type="text/javascript").
+		var sensors = {};
 	nav.navbar.navbar-expand-md.fixed-top
 		.container
 			a.navbar-brand(href='#') Miblab Weatherstation
@@ -19,41 +21,44 @@ block content
 	.container
 		.d-flex.flex-wrap.justify-content-between
 			each prop in docs
+				script(type="text/javascript").
+					sensors["#{prop.sensor.locationID}"] = "#{prop.sensor.data.sensorObjectID}";
 				.card.widget
 					.card-title.d-flex.justify-content-between
 						.widget-sensorname #{prop.sensor.sensorname}
 						.widget-title #{prop.sensor.locationID}
 						.widget-sensorstatus
-							if (moment().format('X') - moment(prop.data.timestamp * 1000).format('X')) <= (2*prop.sensor.sendInterval)
+							if (moment().format('X') - moment(prop.sensor.data.timestamp * 1000).format('X')) <= (2*prop.sensor.sendInterval)
 								//.icon.ion-checkmark-circled(style="color: #40B271")
 							else
 								.icon.ion-alert-circled(style="color:#FF5147" title="Sensor down")
 					.card-body
 						.card-group.widget-featuregroup
-							.card.widget-feature(id="t/" + prop.data.sensorObjectID)
+							.card.widget-feature(id="t/" + prop.sensor.data.sensorObjectID)
 								.card-body.mx-auto
 									.card-feature.ion-thermometer
-									.card-feature-value #{prop.data.weatherData.temperatureEnvironment}
+									.card-feature-value #{prop.sensor.data.weatherData.temperatureEnvironment}
 									.card-feature-unit °C
-							.card.widget-feature(id="p/" + prop.data.sensorObjectID)
+							.card.widget-feature(id="p/" + prop.sensor.data.sensorObjectID)
 								.card-body.mx-auto
 									.card-feature.ion-speedometer
-									.card-feature-value #{prop.data.weatherData.pressure} 
+									.card-feature-value #{prop.sensor.data.weatherData.pressure} 
 									.card-feature-unit mbar
-							.card.widget-feature(id="h/" + prop.data.sensorObjectID)
+							.card.widget-feature(id="h/" + prop.sensor.data.sensorObjectID)
 								.card-body.mx-auto
 									.card-feature.ion-waterdrop
-									.card-feature-value #{prop.data.weatherData.humidity} 
+									.card-feature-value #{prop.sensor.data.weatherData.humidity} 
 									.card-feature-unit %
 					.card-footer
 						.card-timestamp.ion-clock  
-							.p #{moment(prop.data.timestamp*1000).format('LL')} #{moment(prop.data.timestamp*1000).format('LT')}
+							.p #{moment(prop.sensor.data.timestamp*1000).format('LL')} #{moment(prop.sensor.data.timestamp*1000).format('LT')}
 
-		//.card.container-yaml
-		//	.card-body
-		//		.drag-and-drop.text-center
-		//			.icon-drag-and-drop.ion-archive
-		//			span Drop yaml file here.
+		.card.container-yaml
+			.card-body
+				#drag-and-drop.text-center
+					.icon-drag-and-drop.ion-archive
+					span Drop yaml file here.
+				output#yaml-list
 		.card#container-lineplot(style='display:none')
 			.card-header
 				.btn-toolbar.justify-content-between(role='toolbar', aria-label='Toolbar with button groups')
