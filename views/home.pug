@@ -25,7 +25,7 @@ block content
 					sensors["#{prop.sensor.locationID}"] = "#{prop.sensor.data.sensorObjectID}";
 				.card.widget
 					.card-title.d-flex.justify-content-between
-						.widget-sensorname #{prop.sensor.sensorname}
+						.widget-sensorname #{prop.sensor.data.sensorname}
 						.widget-title #{prop.sensor.locationID}
 						.widget-sensorstatus
 							if (moment().format('X') - moment(prop.sensor.data.timestamp * 1000).format('X')) <= (2*prop.sensor.sendInterval)

@@ -4,8 +4,7 @@ $(document).ready(
 		var yamlDropZone = document.getElementById('drag-and-drop');
 
 		yamlDropZone.addEventListener('dragover', handleDragOver, false);
-		yamlDropZone.addEventListener('drop', handleFileSelect, false);
-		
+		yamlDropZone.addEventListener('drop', handleFileSelect, false);	
 	}
 )
 
@@ -124,10 +123,9 @@ function handleFileSelect(evt) {
 				var docs_yaml = jsyaml.loadAll(yaml, 'utf8');
 				var doc_yaml = docs_yaml[0];
 		
-				var starttime = parseYamlTime(doc_yaml['Micro-Manager Metadata']['Time']);
-
+				var starttime = parseYamlTime(doc_yaml['Micro-Manager Metadata']['Time'])*1000;
 				//calculate imaging time using number of frames and exposure time per frame
-				var endtime = starttime + (doc_yaml['Frames']*parseInt(doc_yaml['Micro-Manager Metadata']['Exposure-ms']/1000));
+				var endtime = starttime + parseInt(doc_yaml['Frames'] * (doc_yaml['Micro-Manager Metadata']['Exposure-ms']));
 
 				getSensorID(doc_yaml["Micro-Manager Metadata"]["Microscope-Label"], function(sensorObjectID, err){
 
