@@ -1,4 +1,4 @@
-# miblab-weather-server
+# Saturn Tower
 A webserver that collects temperature, pressure and humidity data from Raspberry Pis.
 
 ## Getting Started
