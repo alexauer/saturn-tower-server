@@ -13,7 +13,6 @@ var Sensor = require('../models/sensor.js');
 var User = require('../models/user.js');
 var Measurement = require('../models/measurement.js');
 
-
 //config
 var config = require('../config/main.json');
 

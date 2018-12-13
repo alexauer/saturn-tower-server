@@ -25,7 +25,7 @@ block content
 					sensors["#{prop.sensor.locationID}"] = "#{prop.sensor.data.sensorObjectID}";
 				.card.widget
 					.card-title.d-flex.justify-content-between
-						.widget-sensorname #{prop.sensor.data.sensorname}
+						.widget-sensorname #{prop.sensor.data.sensorName}
 						.widget-title #{prop.sensor.locationID}
 						.widget-sensorstatus
 							if (moment().format('X') - moment(prop.sensor.data.timestamp * 1000).format('X')) <= (2*prop.sensor.sendInterval)
@@ -62,8 +62,7 @@ block content
 		.card#container-lineplot(style='display:none')
 			.card-header
 				.btn-toolbar.justify-content-between(role='toolbar', aria-label='Toolbar with button groups')
-					.plot-title.icon.ion-ios-pulse-strong
-						|  Graph
+					.plot-title
 					.btn-group.btn-group-xs.mx-auto(role='group', aria-label='First group')
 						button.btn.btn-outline-dark(type='button')#btn24h 24h
 						button.btn.btn-outline-dark(type='button')#btn48h 48h

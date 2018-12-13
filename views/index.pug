@@ -3,7 +3,8 @@ extends layout
 block content
 	.login-panel.rounded.align-middle
 		.logo
-			img.img-fluid(src='./img/tower.gif', alt='Responsive image')
+			object(data="../img/tower.svg" type="image/svg+xml")
+			| Ihr Browser kann leider kein svg darstellen!
 		form(class='form-signin', action='/login', method='POST')
 			.title-login.form-signin-heading.text-center Saturn Tower
 			input(type='text', name='username' class='form-control', placeholder='Account',required, autofocus)
