@@ -39,7 +39,7 @@ var MongoClient = require('mongodb').MongoClient
 	, assert = require('assert');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/miblab-weather-station';
+var url = 'mongodb://localhost:27017/saturn-tower';
 
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, db) {
@@ -50,7 +50,7 @@ MongoClient.connect(url, function(err, db) {
 
 // Mongoose
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/miblab-weather-station', {
+mongoose.connect('mongodb://localhost/saturn-tower', {
   	useMongoClient: true,
   /* other options */
 });

@@ -52,12 +52,12 @@ var show = function (req, res){
 		});
 	}, function(err){
 		if(err){
-			res.render('home', {title: 'Miblab Weatherstation', errorMessage:'Error during data preparation.'});
+			res.render('home', {title: 'Saturn Tower', errorMessage:'Error during data preparation.'});
 		}else if(response){
 			
-			res.render('home', {title: 'Miblab Weatherstation', docs:response});
+			res.render('home', {title: 'Saturn Tower', docs:response});
 		}else{
-			res.render('home', {title: 'Miblab Weatherstation', errorMessage:'User has no sensors assigned.'});
+			res.render('home', {title: 'Saturn Tower', errorMessage:'User has no sensors assigned.'});
 		}
 	});	
 }
