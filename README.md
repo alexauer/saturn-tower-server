@@ -31,18 +31,23 @@ mongod
 ```
 
 The weatherstation server can be started form any folder on your system.
-Before starting up the server, modify the main.json file at the folder 'config/main.json' according to your network settings (PORT).
+Before starting up the server, create a file called 'main.json' and save it in a new folder called 'config'. 
+Copy and edit the JSON file below according to your system (PORT).
 
-Unsing a second command line window start weatherstation server:
+```
+{
+  "PORT":"80",
+  "maxSensorTimeStampValidityInSec":7200,
+  "deviceHashKey":"myDeviceHashKey",
+  "msgHashKey":"myMsgHashKey"
+}
+```
+
+Using a second command line window start the server:
 
 ```
 node app
 ```
-
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Authors
 
