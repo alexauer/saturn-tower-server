@@ -30,9 +30,9 @@ Unsing command line (Mac: Terminal app.) start MongoDB server with default data 
 mongod
 ```
 
-The weatherstation server can be started form any folder on your system.
+Saturn tower server can be started form any folder on your system.
 Before starting up the server, create a file called 'main.json' and save it in a new folder called 'config'. 
-Copy and edit the JSON file below according to your system (PORT).
+Copy and edit the JSON file below, according to your system (PORT).
 
 ```
 {
