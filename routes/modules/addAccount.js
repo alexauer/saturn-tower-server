@@ -33,11 +33,11 @@ var addAccount = function(req,res){
             sensor.save(function (err, sensor){
                 if (err){
                     portal.error('Admin Portal: User: '+ user.username + ': Error during saving, Error: '+err);
-                    var returnJSON = {"status": "failure", "objectID": sensor.id, "errormessage": "Sensor konnte nicht in der Datenbank gespeichert werden."};
+                    var returnJSON = {"status": "failure", "objectID": sensor.id, "errormessage": "Sensor could not be saved into DB."};
                     res.send(JSON.stringify(returnJSON));
                 }else{
                     portal.info('Admin Portal: User: '+ user.username + ': Sensor was saved in DB, objectID: ' +user.id);
-                    var returnJSON = {"status": 'ok', "objectID": sensor.id, "errormessage": "Sensor saved into databank."};
+                    var returnJSON = {"status": 'ok', "objectID": sensor.id, "errormessage": "Sensor saved into DB."};
                     res.send(JSON.stringify(returnJSON));
                 }
             });
