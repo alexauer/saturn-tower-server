@@ -1,15 +1,15 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* Logger */
-var winston = require('winston');
-var portal = winston.loggers.get('portal');
+const winston = require('winston');
+const portal = winston.loggers.get('portal');
 
 /* Models */
-var User = require('../../models/user.js')
-var Sensor = require('../../models/sensor.js');
+const User = require('../../models/user.js')
+const Sensor = require('../../models/sensor.js');
 
-var addSensor = function(req,res){
+const addSensor = function(req,res){
 
 	var sensor = new Sensor();
     sensor.creationTimestamp = generateDate();
@@ -50,7 +50,7 @@ var addSensor = function(req,res){
     });
 }
 
-var generateDate = function(){
+const generateDate = function(){
     var result = moment().format('X');
     return result;
 };

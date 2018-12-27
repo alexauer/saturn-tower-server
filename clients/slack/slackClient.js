@@ -23,7 +23,7 @@ const conversationID = config.slackChannel;
 // }
 
 //send down-time alert  
-function sendDownAlert = function(sensor, lastMsg){
+const sendDownAlert = function(sensor, lastMsg){
 
 	var alertText = 'Sensor '+sensor.sensorName+' ('+sensor.locationID+') in room '+sensor.location+' is down since '+ moment(lastMsg.timestamp,'X').format("dd, D MMM, HH:mm");
 

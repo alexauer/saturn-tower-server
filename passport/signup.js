@@ -1,6 +1,6 @@
-var LocalStrategy   = require('passport-local').Strategy;
-var User = require('../models/user');
-var bCrypt = require('bcrypt-nodejs');
+const LocalStrategy   = require('passport-local').Strategy;
+const User = require('../models/user');
+const bCrypt = require('bcrypt-nodejs');
 
 module.exports = function(passport){
 
@@ -50,7 +50,7 @@ module.exports = function(passport){
     );
 
     // Generates hash using bCrypt
-    var createHash = function(password){
+    const createHash = function(password){
         return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
     }
 

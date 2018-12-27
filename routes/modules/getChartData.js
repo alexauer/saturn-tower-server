@@ -1,18 +1,18 @@
- var express = require('express');
-var router = express.Router();
-var async = require('async');
-var json2csv = require('json2csv');
+const express = require('express');
+const router = express.Router();
+const async = require('async');
+const json2csv = require('json2csv');
 
 /* Logger */
-var winston = require('winston');
-var portal = winston.loggers.get('portal');
+const winston = require('winston');
+const portal = winston.loggers.get('portal');
 
 /* Models */
-var User = require('../../models/user.js')
-var Sensor = require('../../models/sensor.js');
-var Measurement = require('../../models/measurement.js');
+const User = require('../../models/user.js')
+const Sensor = require('../../models/sensor.js');
+const Measurement = require('../../models/measurement.js');
 
-var getChartData = function(req,res){
+const getChartData = function(req,res){
 
 	var sensorObjectID = req.params.sensor_ObjectID;
 	var starttime = req.params.start;
@@ -46,7 +46,7 @@ var getChartData = function(req,res){
 }
 
 
-var checkAuthenticity = function(reqSensorID, req, callback){
+const checkAuthenticity = function(reqSensorID, req, callback){
 	
 	User.findOne({'_id':req.user.id}, function (err,user){
 		
@@ -68,7 +68,7 @@ var checkAuthenticity = function(reqSensorID, req, callback){
 }
 
 
-var queryChartData = function(sensorObjectID, start, end, callback){
+const queryChartData = function(sensorObjectID, start, end, callback){
 
 	Measurement.find({'sensorObjectID':sensorObjectID}).where('timestamp').gt(start).lt(end).sort('timestamp').exec(function(err,sensorDocs){
 

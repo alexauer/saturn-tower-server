@@ -1,15 +1,15 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* Logger */
-var winston = require('winston');
-var portal = winston.loggers.get('portal');
+const winston = require('winston');
+const portal = winston.loggers.get('portal');
 
 /* Models */
-var User = require('../../models/user.js')
-var Sensor = require('../../models/sensor.js');
+const User = require('../../models/user.js')
+const Sensor = require('../../models/sensor.js');
 
-var addAccount = function(req,res){
+const addAccount = function(req,res){
 
 	var user = new User();
     user.username = req.body.settings.username;
@@ -46,7 +46,7 @@ var addAccount = function(req,res){
 }
 
 // Generates hash using bCrypt
-var createHash = function(password){
+const createHash = function(password){
     return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 };
 

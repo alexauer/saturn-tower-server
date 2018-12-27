@@ -1,18 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var async = require('async');
+const express = require('express');
+const router = express.Router();
+const async = require('async');
 
 /* Logger */
-var winston = require('winston');
-var portal = winston.loggers.get('portal');
+const winston = require('winston');
+const portal = winston.loggers.get('portal');
 
 /* Models */
-var User = require('../../models/user.js')
-var Sensor = require('../../models/sensor.js');
-var Measurement = require('../../models/measurement.js');
+const User = require('../../models/user.js')
+const Sensor = require('../../models/sensor.js');
+const Measurement = require('../../models/measurement.js');
 
 
-var show = function (req, res){
+const show = function (req, res){
 	
 	var sensorObjectIDs = req.user.sensorObjectIDs;
 	var response = [];

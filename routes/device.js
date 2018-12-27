@@ -1,22 +1,23 @@
-var express = require('express');
-var deviceRoute = express.Router();
-var async = require('async');
-var moment = require('moment');
-var crypto = require('crypto-js');
+const express = require('express');
+const deviceRoute = express.Router();
+const async = require('async');
+const moment = require('moment');
+const crypto = require('crypto-js');
 
 //logger
-var winston = require('../logs/logger.js');
-var sensor = winston.loggers.get('sensor'); 
+const winston = require('../logs/logger.js');
+const sensor = winston.loggers.get('sensor'); 
 
 //models
-var Sensor = require('../models/sensor.js');
-var User = require('../models/user.js');
-var Measurement = require('../models/measurement.js');
+const Sensor = require('../models/sensor.js');
+const User = require('../models/user.js');
+const Measurement = require('../models/measurement.js');
 
 //config
-var config = require('../config/main.json');
+const config = require('../config/main.json');
 
-var isAuthenticated = function (req, res, next) {
+//middleware
+const isAuthenticated = function (req, res, next) {
   	//is always authenticated because sensore aren't able to log in
     return next();
 }
@@ -28,12 +29,13 @@ deviceRoute.post('/', isAuthenticated, function(req, res){
 	checkInput(req, function(err, input){
 		
 		if (err){
-			sensor.error('SensorID: ')
+			sensor.error('SensorID: '+err);
 		}
+
 		if (input){
 			
 			// //check sensor ID & message hash (fake sensor attack)
-			checkAuthenticity(req, function(err, authenticity){
+			checkAuthenticity(req, function(err, authentic){
 
 				var messageData = {
 					"sensorID": req.body.message.sensorID,
@@ -53,7 +55,7 @@ deviceRoute.post('/', isAuthenticated, function(req, res){
 						sensor.info('Sensor: ' + req.body.message.sensorname + ' response sent to client. \r')
 					});
 				}
-				if (authenticity){
+				if (authentic){
 
 					saveToDB(req, function(err, dataDB){
 
@@ -74,7 +76,7 @@ deviceRoute.post('/', isAuthenticated, function(req, res){
 	});
 });
 
-var checkInput = function(req, callback){
+const checkInput = function(req, callback){
 
 	if (req.body.message){
 		if (req.body.length > 1e6){
@@ -89,7 +91,7 @@ var checkInput = function(req, callback){
 	}
 }
 
-var checkAuthenticity = function(req, callback){
+const checkAuthenticity = function(req, callback){
 
 	
 	// hashSensorID(req.body.message.sensorID, key, function(hash){
@@ -135,19 +137,19 @@ var checkAuthenticity = function(req, callback){
 	}
 }
 
-var hashSensorID = function(input, key, callback){
+const hashSensorID = function(input, key, callback){
 	var hash = crypto.HmacSHA256(input, key);
 	var hashString = hash.toString(crypto.enc.utf8);
 	return callback(hashString);
 }
 
-var hashMsg = function(input, key, callback){
+const hashMsg = function(input, key, callback){
 	var hash = crypto.HmacSHA256(input, key);
 	var hashString = hash.toString(crypto.enc.utf8);
 	return callback(hashString);
 }
 
-var saveToDB = function(req, callback){
+const saveToDB = function(req, callback){
 
 	var query  = Sensor.where({ _id : req.body.message.sensorObjectID });
 	query.findOne(function (err, sensor){
@@ -179,7 +181,7 @@ var saveToDB = function(req, callback){
 	});
 }
 
-var initSensor = function(callback){
+const initSensor = function(callback){
 
 	var sensor = Sensor();
 	sensor.sensorID = '00000000d75c2580'

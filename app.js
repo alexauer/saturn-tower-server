@@ -1,45 +1,45 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var http = require('http');
-var flash = require('express-flash');
-// var tls = require('tls');
-// var fs = require('fs');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const http = require('http');
+const flash = require('express-flash');
+// const tls = require('tls');
+// const fs = require('fs');
 
-var config = require('./config/main.json')
+const config = require('./config/main.json')
 
 // SSL options
-// var configSSL = {
+// const configSSL = {
 //   key: fs.readFileSync('./private/server-key.pem'),
 //   cert: fs.readFileSync('./private/server-cert.pem'),
 //   ca: fs.readFileSync('')
 // }
 
 // PFS (Perfect Forwared Security) context
-// var optionsPFS ={
+// const optionsPFS ={
 //   key: fs.readFileSync('./private/server-key.pem'),
 //   cert: fs.readFileSync('./private/server-cert.pem'),
 //   dhparam: fs.readFileSync('./private/dhparam.pem')
 // }
 
 
-// var context = tls.createSecureContext(configSSL);
+// const context = tls.createSecureContext(configSSL);
 
 // deviceServer.addContext(host+port2,context);
 
 // Portal Server
-var HOST = '127.0.0.1';
-var PORT = config.PORT;
+const HOST = '127.0.0.1';
+const PORT = config.PORT;
 
 // MongoDB
-var MongoClient = require('mongodb').MongoClient
+const MongoClient = require('mongodb').MongoClient
 	, assert = require('assert');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/saturn-tower';
+const url = 'mongodb://localhost:27017/saturn-tower';
 
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, db) {
@@ -49,19 +49,19 @@ MongoClient.connect(url, function(err, db) {
 });
 
 // Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/saturn-tower', {
   	useMongoClient: true,
   /* other options */
 });
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log("Mongoose connected successfully to server.");
 });
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,8 +75,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // configure passport
-var passport = require('passport');
-var expressSession = require('express-session');
+const passport = require('passport');
+const expressSession = require('express-session');
 app.use(expressSession({secret:'TopSecretKey',
             saveUninitialized: true,
             resave: true}));
@@ -85,18 +85,18 @@ app.use(passport.session());
 app.locals.moment = require('moment');
 
 // Initialize Passport
-var initPassport = require('./passport/init');
+const initPassport = require('./passport/init');
 initPassport(passport);
 
-var routes = require('./routes/index.js')(passport);
-var device = require('./routes/device.js');
+const routes = require('./routes/index.js')(passport);
+const device = require('./routes/device.js');
 
 app.use('/', routes);
 app.use('/sensors', device);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
- 	var err = new Error('Not Found');
+ 	const err = new Error('Not Found');
   	err.status = 404;
   	next(err);
 });
@@ -112,7 +112,7 @@ app.use(function(err, req, res, next) {
 	res.render('error');
 });
 
-var httpPortalServer = http.createServer(app);
+const httpPortalServer = http.createServer(app);
 httpPortalServer.listen(PORT, function(){
     console.log("Node portal server running at port: "+PORT);
 });
