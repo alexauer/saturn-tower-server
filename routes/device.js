@@ -114,19 +114,19 @@ const checkAuthenticity = function(req, callback){
 		var msgHash = req.body.messageHash;
 		var msgString = JSON.stringify(req.body.message);
 
-		var key = req.body.message.timestamp.toString().slice(-4) + config.deviceHashKey;
+		var key = req.body.message.timestamp.toString().slice(-4) + config.hash.deviceKey;
 		// check sensorID hash
 		hashSensorID(sensorID, key, function(hashedSensorID){
 
 			if(hashedSensorID === sensorIDHash){
 
 				// check message hash
-				hashMsg(msgString, config.msgHashKey, function(hasehdRawMsgBody){
+				hashMsg(msgString, config.hash.messageKey, function(hashedRawMsgBody){
 
-					if (hasehdRawMsgBody  === msgHash){
+					if (hashedRawMsgBody  === msgHash){
 						return callback(null, true);
 					}else{
-						return callback(new Error('Sensor was authenticated. Message Hash wrong. \n' + "msgHash:"+msgHash+" \n"+"hashedMsg: "+ hasehdRawMsgBody+"\nMsgString:"+msgString+"\nMsgRaw:"+req.body.message), null)
+						return callback(new Error('Sensor was authenticated. Message Hash wrong. \n' + "msgHash:"+msgHash+" \n"+"hashedMsg: "+ hashedRawMsgBody+"\nMsgString:"+msgString+"\nMsgRaw:"+req.body.message), null)
 					}
 				});
 

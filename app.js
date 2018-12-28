@@ -31,7 +31,7 @@ const config = require('./config/main.json')
 // deviceServer.addContext(host+port2,context);
 
 // Portal Server
-const HOST = '127.0.0.1';
+const HOST = config.HOST;
 const PORT = config.PORT;
 
 // MongoDB
