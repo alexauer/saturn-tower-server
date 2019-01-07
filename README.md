@@ -36,7 +36,7 @@ Copy and edit the JSON file below, according to your system (PORT).
 
 ```
 {
-  "PORT":"80",
+  "PORT":80,
   "maxSensorTimeStampValidityInSec":7200,
   "deviceHashKey":"myDeviceHashKey",
   "msgHashKey":"myMsgHashKey"
