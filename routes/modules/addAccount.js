@@ -14,6 +14,7 @@ const addAccount = function(req,res){
 	var user = new User();
     user.username = req.body.settings.username;
     user.password = createHash(req.bodt.settings.password);
+    user.emailAddress = req.body.settings.emailAddress;
 
     var query = User.where({'username':req.body.settings.username})
 
