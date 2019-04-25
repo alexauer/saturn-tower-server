@@ -13,6 +13,11 @@ const isAuthenticated = function (req, res, next) {
 	// if the user is not authenticated then redirect him to the login page
 }
 
+const isAdmin = function(req, res, next){
+
+
+}
+
 module.exports = function(passport){
 	
 	/* GET login page. */
@@ -35,10 +40,17 @@ module.exports = function(passport){
 	});
 
 	/* GET home page */
-	router.get('/home', isAuthenticated, function(req,res){
+	router.get('/home', isAuthenticated, function(req, res){
 		const homeReq = require('./modules/home.js');
 		homeReq.show(req, res);
 	});
+
+		/* GET registeration page. */
+	router.get('/settings', isAuthenticated, function(req, res){
+		const settingsReq = require('./modules/settings.js')
+		res.render('settings', { title: 'Settings' });
+	});
+
 
 	/* GET registeration page. */
 	router.get('/register', function(req, res, next) {
@@ -53,7 +65,7 @@ module.exports = function(passport){
 	}));
 
 	/* GET chart data */
-	router.get('/get/chartData/:sensor_ObjectID/:start-:end', isAuthenticated, function(req,res){
+	router.get('/get/chartData/:sensor_ObjectID/:start-:end', isAuthenticated, function(req, res){
 		const getChartData = require('./modules/getChartData.js');
 		getChartData.getChartData(req,res);
 	});
