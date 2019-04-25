@@ -34,7 +34,7 @@ deviceRoute.post('/', isAuthenticated, function(req, res){
 
 		if (input){
 			
-			//check sensor ID & message hash (fake sensor attack)
+			// //check sensor ID & message hash (fake sensor attack)
 			checkAuthenticity(req, function(err, authentic){
 
 				var messageData = {
@@ -129,6 +129,7 @@ const checkAuthenticity = function(req, callback){
 						return callback(new Error('Sensor was authenticated. Message Hash wrong. \n' + "msgHash:"+msgHash+" \n"+"hashedMsg: "+ hashedRawMsgBody+"\nMsgString:"+msgString+"\nMsgRaw:"+req.body.message), null)
 					}
 				});
+
 			}else{
 				return callback(new Error('Sensor was not authenticated.'), null)
 			}

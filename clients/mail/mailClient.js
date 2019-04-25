@@ -6,6 +6,7 @@ const moment = require('moment')
 //config
 const config = require('../../config/main.json');
 
+
 var smtpConfig = {
 	host: config.emailAlert.SMTP.HOST,
     port: config.emailAlert.SMTP.PORT,
@@ -17,13 +18,13 @@ var smtpConfig = {
 };
 
 //send alert via email
-const sendAlert = function(user, sensor, lastMsg, callback){
+const sendAlert = function(sensor, lastMsg, callback){
 
     var alertText = 'Sensor '+sensor.sensorName+' ('+sensor.locationID+') in room '+sensor.location+' is down since '+ moment(lastMsg.timestamp,'X').format("dd, D MMM, HH:mm");
 
     var message = {
         from: config.emailAlert.SENDER,
-        to: user.email.address,
+        to: config.emailAlert.RECEIVER,
         subject: 'Saturn Tower Sensor Alert',
         text: alertText
     };

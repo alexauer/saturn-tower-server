@@ -50,7 +50,6 @@ MongoClient.connect(url, function(err, db) {
 
 // Mongoose
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise; 
 mongoose.connect('mongodb://localhost/saturn-tower', {
   	useMongoClient: true,
   /* other options */
@@ -117,29 +116,5 @@ const httpPortalServer = http.createServer(app);
 httpPortalServer.listen(PORT, function(){
     console.log("Node portal server running at port: "+PORT);
 });
-
-// const initSensor = function(callback){
-
-// 	const Sensor = require('./models/sensor.js');
-// 	const moment = require('moment')
-// 	var sensor = Sensor();
-// 	sensor.creationTimestamp = moment().format('X')
-// 	sensor.sensorID = '00000000d4972121'
-// 	sensor.sensorName = 'Proton'
-// 	sensor.location = 'Reiti 25'
-// 	sensor.locationID = 'Sputnik'
-// 	sensor.connectivity = 'WIFI'
-
-// 	sensor.save(function(err, data, numAffected){
-// 		if(err){
-// 			console.log(new Error('Sensor could not be saved: ' + err));
-// 		}else{
-// 			console.log('sensor saved with ob_id: ' + data.id);
-// 			callback(data.id)
-// 		}
-// 	});
-// }
-
-// initSensor()
 
 module.exports = app;

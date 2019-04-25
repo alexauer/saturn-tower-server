@@ -9,7 +9,7 @@ const portal = winston.loggers.get('portal');
 const User = require('../../models/user.js')
 const Sensor = require('../../models/sensor.js');
 
-const addSensor = function(req, res){
+const addSensor = function(req,res){
 
 	var sensor = new Sensor();
     sensor.creationTimestamp = generateDate();
@@ -17,7 +17,8 @@ const addSensor = function(req, res){
     sensor.sensorName = req.body.settings.sensorName;
     sensor.location = req.body.settings.location;
     sensor.locationID =  req.body.settings.locationID;
- 
+    sensor.connectivity = req.body.settings.connectivity;
+    sensor.macAdresse = req.body.settings.macAdresse; 
 
     var query = Sensor.where({'sensorID':req.body.settings.sensorID})
 

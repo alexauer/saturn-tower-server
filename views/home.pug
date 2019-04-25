@@ -28,7 +28,9 @@ block content
 						.widget-sensorname #{prop.sensor.data.sensorName}
 						.widget-title #{prop.sensor.locationID}
 						.widget-sensorstatus
-							if (moment().format('X') - moment(prop.sensor.data.timestamp * 1000).format('X')) >= (2*prop.sensor.sendInterval)
+							if (moment().format('X') - moment(prop.sensor.data.timestamp * 1000).format('X')) <= (2*prop.sensor.sendInterval)
+								//.icon.ion-checkmark-circled(style="color: #40B271")
+							else
 								.icon.ion-alert-circled(style="color:#FF5147" title="Sensor down")
 					.card-body
 						.card-group.widget-featuregroup
@@ -50,6 +52,7 @@ block content
 					.card-footer
 						.card-timestamp.ion-clock  
 							.p #{moment(prop.sensor.data.timestamp*1000).format('LL')} #{moment(prop.sensor.data.timestamp*1000).format('LT')}
+
 		.card.container-yaml
 			.card-body
 				#drag-and-drop.text-center
