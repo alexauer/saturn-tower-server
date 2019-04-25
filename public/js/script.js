@@ -123,9 +123,9 @@ function handleFileSelect(evt) {
 				var docs_yaml = jsyaml.loadAll(yaml, 'utf8');
 				var doc_yaml = docs_yaml[0];
 		
-				var starttime = parseYamlTime(doc_yaml['Micro-Manager Metadata']['Time'])*1000;
+				var starttime = parseYamlTime(doc_yaml['Micro-Manager Metadata']['receivedTime']);
 				//calculate imaging time using number of frames and exposure time per frame
-				var endtime = starttime + parseInt(doc_yaml['Frames'] * (doc_yaml['Micro-Manager Metadata']['Exposure-ms']));
+				var endtime = parseInt(starttime) + (parseInt(doc_yaml['Frames'] * (doc_yaml['Micro-Manager Metadata']['Exposure-ms'])/1000));
 
 				getSensorID(doc_yaml["Micro-Manager Metadata"]["Microscope-Label"], function(sensorObjectID, err){
 
