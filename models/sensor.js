@@ -7,9 +7,7 @@ var Sensor = new Schema({
     sensorName: String,
     location: String,
     locationID: String,
-    connectivity: String,
     sendInterval: Number,
-    macAdresse: String,
     lastRestart: String
 });
 
