@@ -27,7 +27,7 @@
     "express": "^4.16.4",
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
-    "highcharts": "^7.0.3",
+    "highcharts": "^7.2.2",
     "json2csv": "^3.11.5",
     "moment": "^2.24.0",
     "mongodb": "^2.2.36",
